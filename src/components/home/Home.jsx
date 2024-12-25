@@ -1,120 +1,168 @@
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Typography,
-    Button,
-    IconButton,
-} from "@material-tailwind/react";
-import {ArrowRightIcon, ArrowLeftIcon} from "@heroicons/react/24/outline";
+import {useEffect, useState} from 'react';
+import {ShoppingCart, ChevronLeft, ChevronRight} from 'lucide-react';
 import axios from "axios";
-import {useEffect, useState} from "react";
 
-export default function Home() {
-    const baseUrl = import.meta.env.VITE_API_URL;
+const Home = () => {
+    // Sample product data - replace with your actual data
+    /* const products = [
+         {
+             id: 1,
+             name: "Wireless Headphones",
+             price: 99.99,
+             description: "High-quality wireless headphones with noise cancellation",
+             image: "/api/placeholder/300/200"
+         },
+         {
+             id: 2,
+             name: "Smart Watch",
+             price: 199.99,
+             description: "Feature-rich smartwatch with health tracking",
+             image: "/api/placeholder/300/200"
+         },
+         {
+             id: 3,
+             name: "Laptop Backpack",
+             price: 49.99,
+             description: "Waterproof laptop backpack with multiple compartments",
+             image: "/api/placeholder/300/200"
+         },
+         {
+             id: 4,
+             name: "Mechanical Keyboard",
+             price: 129.99,
+             description: "RGB mechanical keyboard with cherry mx switches",
+             image: "/api/placeholder/300/200"
+         },
+         {
+             id: 5,
+             name: "Wireless Mouse",
+             price: 39.99,
+             description: "Ergonomic wireless mouse with long battery life",
+             image: "/api/placeholder/300/200"
+         },
+         {
+             id: 6,
+             name: "USB-C Hub",
+             price: 59.99,
+             description: "7-in-1 USB-C hub with HDMI and card reader",
+             image: "/api/placeholder/300/200"
+         }
+     ];*/
 
+
+    const baseUrl = import.meta.env.VITE_API_URL
     const [products, setProducts] = useState([]);
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(5);
-    const [totalData, setTotalData] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
+    const size = 4;
+    let page = 0;
+    const totalPages = Math.ceil(totalProducts / size);
 
-    const loadProducts = async (currentPage = 0) => {
+    const loadProducts = async () => {
         try {
-            console.log("Fetching page:", currentPage);
             const response = await axios.get(`${baseUrl}/api/v1/products/list`, {
                 params: {
-                    searchText: '',
-                    page: currentPage,
-                    size: size,
-                },
-            });
-
-            const data = response.data?.object;
-            console.log(data?.count)
-            console.log(size)
-            console.log(Math.ceil(totalData / size))
-
-            setProducts(data?.dataList || []);
-            setTotalData(data?.count);
-
+                    'searchText': '',
+                    'page': page,
+                    'size': size,
+                }
+            })
+            const data = response.data?.object
+            setTotalProducts(data?.count)
+            setProducts(data?.dataList)
         } catch (error) {
-            console.error("Error loading products:", error);
+            console.error("Something went wrong!...", error)
         }
-    };
+    }
 
     useEffect(() => {
-        loadProducts(page);
-        setTotalPages(Math.ceil(totalData / size))
+        loadProducts();
     }, []);
 
-    const handlePageChange = (newPage) => {
-        if (newPage >= 0 && newPage < totalPages) {
-            console.log("Changing to page:", newPage);
-            setPage(newPage);
-        }
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        page = pageNumber - 1;
+        loadProducts();
     };
 
     return (
-        <div>
-            <div className="flex flex-wrap gap-6">
-                {products.map((product) => (
-                    <Card className="mt-6 w-96 border-2 border-black rounded-md shadow-md bg-gray-300"
-                          key={product.propertyId}>
+        <div className="container mx-auto px-4 py-8">
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-gray-900">Featured Products</h1>
+                <p className="mt-2 text-gray-600">Discover our latest collection of premium products</p>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {products.map((product) => (
+                    <div key={product.propertyId}
+                         className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
                         {product.productImages?.map((image) => (
-                            <CardHeader color="blue-gray" className="relative h-56" key={image.propertyId}>
+                            <div className="w-full" key={image.propertyId}>
                                 <img
                                     src={image.resourceUrl}
-                                    alt={product.name || "Product Image"}
-                                    className="h-full w-full object-cover"
+                                    alt={product.name}
+                                    className="w-full h-48 object-cover"
                                 />
-                            </CardHeader>
+                            </div>
                         ))}
-
-                        <CardBody>
-                            <Typography variant="h6" color="blue-gray">
-                                {product.name || "Product Name"}
-                            </Typography>
-                            <Typography>
-                                {product.description}
-                            </Typography>
-                            <Typography>
-                                Price: ${product.unitPrice}
-                            </Typography>
-                            <Typography>
-                                Quantity: {product.qty}
-                            </Typography>
-                        </CardBody>
-                        <CardFooter className="pt-0">
-                            <Button>Read More</Button>
-                        </CardFooter>
-                    </Card>
+                        <div className="p-4 flex-grow">
+                            <h2 className="text-xl font-semibold mb-2">Product</h2>
+                            <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                            <p className="text-2xl font-bold text-gray-700">${product.unitPrice}</p>
+                        </div>
+                        <div className="p-4 pt-0">
+                            <button
+                                className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                                <ShoppingCart className="w-4 h-4"/>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 ))}
             </div>
-            <div className="flex justify-center items-center my-6 gap-8">
-                <IconButton
-                    size="sm"
-                    variant="outlined"
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page === 0}
+
+            <div className="mt-8 flex justify-center items-center gap-2">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`p-2 rounded-md border ${
+                        currentPage === 1
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
                 >
-                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4"/>
-                </IconButton>
-                <Typography color="gray" className="font-normal">
-                    Page <strong className="text-gray-900">{page + 1}</strong> of{" "}
-                    <strong className="text-gray-900">{totalPages}</strong>
-                </Typography>
-                <IconButton
-                    size="sm"
-                    variant="outlined"
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page + 1 >= totalPages}
+                    <ChevronLeft className="w-4 h-4"/>
+                </button>
+
+                {[...Array(totalPages)].map((_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`px-3 py-1 rounded-md ${
+                            currentPage === index + 1
+                                ? 'bg-gray-700 text-white'
+                                : 'bg-white text-gray-700 hover:bg-gray-50 border'
+                        }`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`p-2 rounded-md border ${
+                        currentPage === totalPages
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
                 >
-                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4"/>
-                </IconButton>
+                    <ChevronRight className="w-4 h-4"/>
+                </button>
             </div>
         </div>
     );
-}
+};
+
+export default Home;
