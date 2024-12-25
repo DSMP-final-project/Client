@@ -3,53 +3,6 @@ import {ShoppingCart, ChevronLeft, ChevronRight} from 'lucide-react';
 import axios from "axios";
 
 const Home = () => {
-    // Sample product data - replace with your actual data
-    /* const products = [
-         {
-             id: 1,
-             name: "Wireless Headphones",
-             price: 99.99,
-             description: "High-quality wireless headphones with noise cancellation",
-             image: "/api/placeholder/300/200"
-         },
-         {
-             id: 2,
-             name: "Smart Watch",
-             price: 199.99,
-             description: "Feature-rich smartwatch with health tracking",
-             image: "/api/placeholder/300/200"
-         },
-         {
-             id: 3,
-             name: "Laptop Backpack",
-             price: 49.99,
-             description: "Waterproof laptop backpack with multiple compartments",
-             image: "/api/placeholder/300/200"
-         },
-         {
-             id: 4,
-             name: "Mechanical Keyboard",
-             price: 129.99,
-             description: "RGB mechanical keyboard with cherry mx switches",
-             image: "/api/placeholder/300/200"
-         },
-         {
-             id: 5,
-             name: "Wireless Mouse",
-             price: 39.99,
-             description: "Ergonomic wireless mouse with long battery life",
-             image: "/api/placeholder/300/200"
-         },
-         {
-             id: 6,
-             name: "USB-C Hub",
-             price: 59.99,
-             description: "7-in-1 USB-C hub with HDMI and card reader",
-             image: "/api/placeholder/300/200"
-         }
-     ];*/
-
-
     const baseUrl = import.meta.env.VITE_API_URL
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -96,7 +49,7 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <div key={product.propertyId}
-                         className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                         className="bg-gray-400 rounded-lg shadow-md overflow-hidden flex flex-col">
                         {product.productImages?.map((image) => (
                             <div className="w-full" key={image.propertyId}>
                                 <img
