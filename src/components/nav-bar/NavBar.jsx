@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import {
     Search,
     ShoppingCart,
@@ -7,6 +7,7 @@ import {
     X,
     Heart
 } from 'lucide-react';
+import {NavLink} from "react-router-dom";
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,11 +26,12 @@ const NavBar = () => {
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-16">
 
+                    {/* Logo */}
                     <div className="flex-shrink-0">
                         <h1 className="text-2xl font-bold text-gray-800 mx-5">UpScale</h1>
                     </div>
 
-
+                    {/* Desktop Navigation Links */}
                     <div className="hidden md:flex items-center space-x-8">
                         {categories.map((category) => (
                             <a
@@ -42,7 +44,7 @@ const NavBar = () => {
                         ))}
                     </div>
 
-
+                    {/* Desktop Search Bar */}
                     <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
                         <div className="relative w-full">
                             <input
@@ -56,7 +58,7 @@ const NavBar = () => {
                         </div>
                     </div>
 
-
+                    {/* Desktop Icons */}
                     <div className="hidden md:flex items-center space-x-6">
                         <button className="text-gray-600 hover:text-gray-800">
                             <Heart className="w-6 h-6" />
@@ -68,10 +70,17 @@ const NavBar = () => {
                             <ShoppingCart className="w-6 h-6" />
                             {cartCount > 0 && (
                                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartCount}
-                </span>
+                                    {cartCount}
+                                </span>
                             )}
                         </button>
+
+                        <NavLink
+                            to="/login"
+                            className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                        >
+                            Sign In
+                        </NavLink>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -90,6 +99,7 @@ const NavBar = () => {
             {isMenuOpen && (
                 <div className="md:hidden">
                     <div className="px-4 pt-2 pb-4 space-y-2">
+
                         {/* Mobile Search */}
                         <div className="relative mb-4">
                             <input
@@ -127,11 +137,21 @@ const NavBar = () => {
                                 <ShoppingCart className="w-6 h-6" />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
-                  </span>
+                                        {cartCount}
+                                    </span>
                                 )}
                                 <span className="text-sm">Cart</span>
                             </button>
+                        </div>
+
+                        {/* Mobile Sign In Button */}
+                        <div className="pt-4">
+                            <NavLink
+                                to="/login"
+                                className="w-full px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                            >
+                                Sign In
+                            </NavLink>
                         </div>
                     </div>
                 </div>
