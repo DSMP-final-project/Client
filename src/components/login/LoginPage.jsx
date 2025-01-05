@@ -1,26 +1,27 @@
 import {useState} from 'react';
 import {Eye, EyeOff, Mail, Lock} from 'lucide-react';
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
+    const baseUrl = import.meta.env.VITE_API_URL;
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const navigate = useNavigate();
 
     const validateForm = () => {
         const newErrors = {};
 
-        // Email validation
         if (!formData.email) {
             newErrors.email = 'Email is required';
         }
 
-        // Password validation
         if (!formData.password) {
             newErrors.password = 'Password is required';
         }
@@ -35,10 +36,8 @@ const LoginPage = () => {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                // Add your login API call here
-                console.log('Form submitted:', formData);
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const response = await axios.post(`${baseUrl}/login`, formData)
+                navigate("/")
                 alert('Login successful!');
             } catch (error) {
                 console.error('Login error:', error);
@@ -55,7 +54,7 @@ const LoginPage = () => {
             ...prev,
             [name]: value
         }));
-        // Clear error when user starts typing
+
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -78,7 +77,6 @@ const LoginPage = () => {
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <form className="space-y-6" onSubmit={handleSubmit}>
-                        {/* Email field */}
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Email address
@@ -104,7 +102,6 @@ const LoginPage = () => {
                             )}
                         </div>
 
-                        {/* Password field */}
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                                 Password
@@ -141,7 +138,6 @@ const LoginPage = () => {
                             )}
                         </div>
 
-                        {/* Remember me & Forgot password */}
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <input
@@ -164,7 +160,6 @@ const LoginPage = () => {
                             </div>
                         </div>
 
-                        {/* Submit button */}
                         <div>
                             <button
                                 type="submit"
@@ -179,13 +174,11 @@ const LoginPage = () => {
                             </button>
                         </div>
 
-                        {/* General error message */}
                         {errors.submit && (
                             <p className="mt-2 text-sm text-red-600 text-center">{errors.submit}</p>
                         )}
                     </form>
 
-                    {/* Sign up link */}
                     <div className="mt-6">
                         <p className="text-center text-sm text-gray-600">
                             Don{"'"}t have an account?{' '}

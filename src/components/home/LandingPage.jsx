@@ -2,11 +2,11 @@ import Footer from "../footer/Footer.jsx";
 import Home from "./Home.jsx";
 import NavBar from "../nav-bar/NavBar.jsx";
 
-const LandingPage=()=>{
-    return(
+const LandingPage = () => {
+    return (
         <>
             <NavBar/>
-                <Home/>
+            <Home/>
             <Footer/>
         </>
     )
