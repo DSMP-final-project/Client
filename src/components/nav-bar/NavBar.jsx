@@ -11,7 +11,9 @@ import {NavLink} from "react-router-dom";
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(0); // Replace with your cart state
+    const [cartCount, setCartCount] = useState(0);
+
+    const token=localStorage.getItem("jwtToken");
 
     const categories = [
         "New Arrivals",
@@ -20,6 +22,10 @@ const NavBar = () => {
         "Accessories",
         "Sale"
     ];
+
+    const handleSignOut =()=>{
+        localStorage.removeItem("jwtToken");
+    }
 
     return (
         <nav className="bg-gray-400 shadow-md rounded-md">
@@ -75,13 +81,20 @@ const NavBar = () => {
                                 </span>
                             )}
                         </button>
-
-                        <NavLink
-                            to="/login"
-                            className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
-                        >
-                            Sign In
-                        </NavLink>
+                        {
+                            token?<NavLink
+                                to="/"
+                                className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                                onClick={handleSignOut}
+                            >
+                                Sign out
+                            </NavLink>:<NavLink
+                                to="/login"
+                                className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                            >
+                                Sign in
+                            </NavLink>
+                        }
                     </div>
 
                     {/* Mobile Menu Button */}

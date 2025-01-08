@@ -2,6 +2,8 @@ import {useState} from 'react';
 import {Eye, EyeOff, Mail, Lock} from 'lucide-react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+import {useAuth} from "../protected-routes/AuthContext.jsx";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +16,7 @@ const LoginPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
+    //const {login}=useAuth();
 
     const validateForm = () => {
         const newErrors = {};
@@ -37,8 +40,30 @@ const LoginPage = () => {
             setIsLoading(true);
             try {
                 const response = await axios.post(`${baseUrl}/login`, formData)
-                navigate("/")
                 alert('Login successful!');
+                const token =  response?.headers?.getAuthorization();
+
+                if (token) {
+                    const decodedToken = jwtDecode(token);
+                    localStorage.setItem("jwtToken", token);
+                    console.log("token",token);
+                    console.log("decoded token",decodedToken)
+
+                    // Filter roles from authorities
+                    const roles = decodedToken.authorities
+                        .filter((auth) => auth.authority.startsWith("ROLE_"))
+                        .map((auth) => auth.authority);
+
+                    if (roles.includes("ROLE_USER")) {
+                        navigate("/")
+                    }
+
+                    if(roles.includes("ROLE_ADMIN")) {
+                        window.location.href = "http://localhost:4200";
+                    }
+                } else {
+                    console.error("No token found in the response");
+                }
             } catch (error) {
                 console.error('Login error:', error);
                 setErrors({submit: 'Invalid email or password'});
