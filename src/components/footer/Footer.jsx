@@ -74,7 +74,7 @@ const Footer = () => {
                         <h3 className="text-lg font-semibold text-white mb-4">Categories</h3>
                         <ul className="space-y-2">
                             <li>
-                                <a href="#" className="hover:text-gray-400 transition-colors">Electronics</a>
+                                <a href="#" className="hover:text-gray-400 transition-colors">Cosmetics</a>
                             </li>
                             <li>
                                 <a href="#" className="hover:text-gray-400 transition-colors">Clothing</a>
@@ -83,10 +83,7 @@ const Footer = () => {
                                 <a href="#" className="hover:text-gray-400 transition-colors">Accessories</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-gray-400 transition-colors">New Arrivals</a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-gray-400 transition-colors">Sale</a>
+                                <a href="#" className="hover:text-gray-400 transition-colors">Electronics</a>
                             </li>
                             <li>
                                 <a href="#" className="hover:text-gray-400 transition-colors">Trending</a>

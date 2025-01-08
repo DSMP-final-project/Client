@@ -3,7 +3,6 @@ import {Eye, EyeOff, Mail, Lock} from 'lucide-react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-import {useAuth} from "../protected-routes/AuthContext.jsx";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({

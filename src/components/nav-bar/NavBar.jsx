@@ -7,24 +7,33 @@ import {
     X,
     Heart
 } from 'lucide-react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({cartCount}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
+    //const [cartCount, setCartCount] = useState(0);
 
     const token=localStorage.getItem("jwtToken");
+    const navigate = useNavigate();
 
     const categories = [
-        "New Arrivals",
-        "Electronics",
+        "Cosmetics",
         "Clothing",
-        "Accessories",
-        "Sale"
+        "Electronics",
+        "Accessories"
     ];
 
     const handleSignOut =()=>{
         localStorage.removeItem("jwtToken");
+        window.location.reload();
+    }
+
+    const goToCart =()=>{
+        navigate("/cart");
+    }
+
+    const goProfile=()=>{
+        navigate("/profile")
     }
 
     return (
@@ -66,13 +75,10 @@ const NavBar = () => {
 
                     {/* Desktop Icons */}
                     <div className="hidden md:flex items-center space-x-6">
-                        <button className="text-gray-600 hover:text-gray-800">
-                            <Heart className="w-6 h-6"/>
-                        </button>
-                        <button className="text-gray-600 hover:text-gray-800">
+                        <button className="text-gray-600 hover:text-gray-800" onClick={goProfile}>
                             <User className="w-6 h-6"/>
                         </button>
-                        <button className="text-gray-600 hover:text-gray-800 relative">
+                        <button className="text-gray-600 hover:text-gray-800 relative" onClick={goToCart}>
                             <ShoppingCart className="w-6 h-6"/>
                             {cartCount > 0 && (
                                 <span

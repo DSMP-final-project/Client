@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
 import {ShoppingCart, ChevronLeft, ChevronRight} from 'lucide-react';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-const Home = () => {
+const Home = (props) => {
     const baseUrl = import.meta.env.VITE_API_URL
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +11,8 @@ const Home = () => {
     const size = 4;
     let page = 0;
     const totalPages = Math.ceil(totalProducts / size);
+    const token = localStorage.getItem("jwtToken");
+    const navigate = useNavigate();
 
     const loadProducts = async () => {
         try {
@@ -39,6 +42,14 @@ const Home = () => {
         loadProducts();
     };
 
+    const handleAddToCart = (id) => {
+        token ? props.setCartCount((prevCount) => prevCount + 1) :
+            navigate("login");
+
+        console.log(id)
+       props.readProductId(id)
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
@@ -66,7 +77,10 @@ const Home = () => {
                         </div>
                         <div className="p-4 pt-0">
                             <button
-                                className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                                onClick={()=>handleAddToCart(product.propertyId)}
+                                className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-800
+                                transition-colors flex items-center justify-center gap-2"
+                            >
                                 <ShoppingCart className="w-4 h-4"/>
                                 Add to Cart
                             </button>
