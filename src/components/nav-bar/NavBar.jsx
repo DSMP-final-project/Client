@@ -13,7 +13,7 @@ const NavBar = ({cartCount}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     //const [cartCount, setCartCount] = useState(0);
 
-    const token=localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
 
     const categories = [
@@ -23,16 +23,16 @@ const NavBar = ({cartCount}) => {
         "Accessories"
     ];
 
-    const handleSignOut =()=>{
+    const handleSignOut = () => {
         localStorage.removeItem("jwtToken");
         window.location.reload();
     }
 
-    const goToCart =()=>{
+    const goToCart = () => {
         navigate("/cart");
     }
 
-    const goProfile=()=>{
+    const goProfile = () => {
         navigate("/profile")
     }
 
@@ -88,13 +88,15 @@ const NavBar = ({cartCount}) => {
                             )}
                         </button>
                         {
-                            token?<NavLink
-                                to="/"
-                                className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
-                                onClick={handleSignOut}
-                            >
-                                Sign out
-                            </NavLink>:<NavLink
+                            token ? (
+
+                                <NavLink
+                                    to="/"
+                                    className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                                    onClick={handleSignOut}
+                                >
+                                    Sign out
+                                </NavLink>) : <NavLink
                                 to="/login"
                                 className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
                             >
@@ -145,15 +147,15 @@ const NavBar = ({cartCount}) => {
 
                         {/* Mobile Icons */}
                         <div className="flex justify-around pt-4 border-t border-gray-200">
-                            <button className="text-gray-600 hover:text-blue-600 flex flex-col items-center">
-                                <Heart className="w-6 h-6"/>
-                                <span className="text-sm">Wishlist</span>
-                            </button>
-                            <button className="text-gray-600 hover:text-blue-600 flex flex-col items-center">
+                            <button className="text-gray-600 hover:text-blue-600 flex flex-col items-center"
+                                    onClick={goProfile}
+                            >
                                 <User className="w-6 h-6"/>
                                 <span className="text-sm">Account</span>
                             </button>
-                            <button className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative">
+                            <button className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative"
+                                    onClick={goToCart}
+                            >
                                 <ShoppingCart className="w-6 h-6"/>
                                 {cartCount > 0 && (
                                     <span
@@ -167,12 +169,20 @@ const NavBar = ({cartCount}) => {
 
                         {/* Mobile Sign In Button */}
                         <div className="pt-4">
-                            <NavLink
-                                to="/login"
-                                className="w-full px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
-                            >
-                                Sign In
-                            </NavLink>
+                            {
+                                token ? <NavLink
+                                    to="/"
+                                    className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                                    onClick={handleSignOut}
+                                >
+                                    Sign out
+                                </NavLink> : <NavLink
+                                    to="/login"
+                                    className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                                >
+                                    Sign in
+                                </NavLink>
+                            }
                         </div>
                     </div>
                 </div>

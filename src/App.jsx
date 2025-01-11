@@ -8,16 +8,18 @@ import {useEffect, useState} from "react";
 import ShoppingCart from "./components/cart/Cart.jsx";
 import UserProfile from "./components/profile/Profile.jsx";
 import PaymentInterface from "./components/payment/Payment.jsx";
+import ProtectedRoute from "./components/protected-routes/ProtectedRoute.jsx";
+import WarningPopup from "./components/warning/WarningPopup.jsx";
 
 function App() {
-    const [productId,setProductId]=useState();
+    const [productId, setProductId] = useState();
 
-    const readProductId=(id)=>{
+    const readProductId = (id) => {
         setProductId(id);
     }
 
     useEffect(() => {
-        if(productId){
+        if (productId) {
             console.log(productId)
         }
     }, [productId]);
@@ -27,9 +29,19 @@ function App() {
             <div>
                 <Routes>
                     <Route path="/" element={<LandingPage readProductId={readProductId}/>}/>
-                    <Route path="/cart" element={<ShoppingCart productId={productId}/>}/>
-                    <Route path="/profile" element={<UserProfile/>}/>
+                    <Route path="/cart" element={
+                        <ProtectedRoute>
+                            <ShoppingCart productId={productId}/>
+                        </ProtectedRoute>
+                    }
+                    />
+                    <Route path="/profile" element={
+                        <ProtectedRoute>
+                            <UserProfile/>
+                        </ProtectedRoute>
+                    }/>
                     <Route path="/cart/payment" element={<PaymentInterface/>}/>
+                    <Route path="/warn" element={<WarningPopup/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/sign-up" element={<SignupPage/>}/>
                     <Route path="*" element={<NotFound/>}/>

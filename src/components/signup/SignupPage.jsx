@@ -13,7 +13,7 @@ const SignUp = () => {
         phone: '',
         userName: '',
         postalCode: '',
-       gender:''
+        gender: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -65,7 +65,7 @@ const SignUp = () => {
             [name]: value
         }));
 
-       // validateEmail(formData.email)
+        // validateEmail(formData.email)
     };
 
     const handleSubmit = async (e) => {
@@ -74,7 +74,7 @@ const SignUp = () => {
             try {
                 const response = await axios.post(`${baseUrl}/api/v1/users/signup`, formData)
                 alert("Sign up successful...");
-               navigate("/login");
+                navigate("/login");
             } catch (e) {
                 alert("Something went wrong " + e);
             }
@@ -82,8 +82,8 @@ const SignUp = () => {
         console.log(formData)
     };
 
-    const handleGenderChange =(e)=>{
-        setFormData({ ...formData, gender: e.target.value });
+    const handleGenderChange = (e) => {
+        setFormData({...formData, gender: e.target.value});
     }
 
     const renderField = (name, label, type, placeholder) => (
@@ -111,19 +111,19 @@ const SignUp = () => {
         </div>
     );
 
-    const radio=(value)=> (
-            <div className="mb-4">
-                <label className="block text-sm font-medium mb-1 text-start">
-                    <input
-                        type="radio"
-                        name="gender"
-                        value={value}
-                        checked={formData.gender === value}
-                        onChange={handleGenderChange}
-                    />
-                    {value}
-                </label>
-            </div>
+    const radio = (value) => (
+        <div className="mb-4">
+            <label className="block text-sm font-medium mb-1 text-start">
+                <input
+                    type="radio"
+                    name="gender"
+                    value={value}
+                    checked={formData.gender === value}
+                    onChange={handleGenderChange}
+                />
+                {value}
+            </label>
+        </div>
     );
 
     return (

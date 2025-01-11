@@ -40,13 +40,11 @@ const LoginPage = () => {
             try {
                 const response = await axios.post(`${baseUrl}/login`, formData)
                 alert('Login successful!');
-                const token =  response?.headers?.getAuthorization();
+                const token = response?.headers?.getAuthorization();
 
                 if (token) {
                     const decodedToken = jwtDecode(token);
                     localStorage.setItem("jwtToken", token);
-                    console.log("token",token);
-                    console.log("decoded token",decodedToken)
 
                     // Filter roles from authorities
                     const roles = decodedToken.authorities
@@ -57,7 +55,7 @@ const LoginPage = () => {
                         navigate("/")
                     }
 
-                    if(roles.includes("ROLE_ADMIN")) {
+                    if (roles.includes("ROLE_ADMIN")) {
                         window.location.href = "http://localhost:4200";
                     }
                 } else {
