@@ -8,11 +8,9 @@ const WarningPopup = () => {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div
-                className="w-full max-w-sm mx-4 bg-white rounded-lg shadow-lg transform transition-all animate-in slide-in-from-top duration-300">
+        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                 <div className="p-6">
-                    {/* Warning Icon */}
                     <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full">
                         <svg
                             className="w-6 h-6 text-red-600"

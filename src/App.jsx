@@ -41,7 +41,6 @@ function App() {
                         </ProtectedRoute>
                     }/>
                     <Route path="/cart/payment" element={<PaymentInterface/>}/>
-                    <Route path="/warn" element={<WarningPopup/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/sign-up" element={<SignupPage/>}/>
                     <Route path="*" element={<NotFound/>}/>

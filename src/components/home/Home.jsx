@@ -25,7 +25,6 @@ const Home = (props) => {
             })
             const data = response.data?.object
             setTotalProducts(data?.count)
-            console.log(data?.dataList)
             setProducts(data?.dataList)
         } catch (error) {
             console.error("Something went wrong!...", error)

@@ -2,7 +2,9 @@ import {useEffect, useState} from 'react';
 import {Edit2, Save, X, Delete} from 'lucide-react';
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import FileUploadModal from "../fileUploade/FileUpload.jsx";
+
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -17,25 +19,34 @@ const UserProfile = () => {
         address: '',
         postalCode: ''
     });
-
     const [formData, setFormData] = useState(user);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [imageUrl, setImageUrl] = useState(null);
+    const [imgId, setImgId] = useState('');
     let profileData;
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const token = localStorage.getItem("jwtToken");
     const decodedToken = jwtDecode(token);
     const email = decodedToken?.sub;
 
     const getCustomer = async () => {
-        const response = await axios.get(`http://localhost:8083/api/v1/customer/${email}`)
+        const response = await axios.get(`${baseUrl}/api/v1/customer/${email}`)
 
-        profileData = response?.data?.object
+        profileData = response?.data?.object;
+        const profImg = response.data.object.profileImage;
+
+
+        if (profImg != null) {
+            setImageUrl(profImg.resourceUrl);
+            setImgId(profImg.propertyId);
+        }
         setFormData(profileData)
     }
 
     useEffect(() => {
-        getCustomer().then(r => console.log(r));
+        getCustomer();
     }, []);
 
     const validateForm = () => {
@@ -59,12 +70,11 @@ const UserProfile = () => {
             setUser(formData);
             setIsEditing(false);
             try {
-                const response = await axios.put(`http://localhost:8083/api/v1/customer/update/${email}`, formData)
+                const response = await axios.put(`${baseUrl}/api/v1/customer/update/${email}`, formData)
                 alert("Profile details Updated.")
             } catch (ex) {
                 alert("Something wend wrong")
             }
-            console.log('Profile updated:', formData);
         }
     };
 
@@ -76,8 +86,6 @@ const UserProfile = () => {
     };
 
     const handleCancel = () => {
-
-        //setFormData(user);
         setErrors({});
         setIsEditing(false);
     };
@@ -87,41 +95,97 @@ const UserProfile = () => {
     }
 
     const deleteAcc = async () => {
-        const isConfirm=window.confirm("Are you sure..");
+        const isConfirm = window.confirm("Are you sure..");
 
-        if (isConfirm){
+        if (isConfirm) {
             try {
-                const response = await axios.delete(`http://localhost:8083/api/v1/customer/${email}`)
+                const response = await axios.delete(`${baseUrl}/api/v1/customer/${email}`)
                 localStorage.removeItem("jwtToken");
                 navigate("/")
-            }catch (ex){
+            } catch (ex) {
                 alert("something went wrong..");
             }
         }
     }
 
-    const profilePicture = "";
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    const handleUpload = async (file) => {
+        const formData = new FormData();
+        formData.append("profileImage", file);
+        console.log(formData)
+
+        try {
+            let response;
+            imageUrl ?
+                response = await axios.put(`${baseUrl}/api/v1/profile-images/${imgId}`, formData)
+                : response = await axios.post(`${baseUrl}/api/v1/profile-images/${email}`, formData);
+
+            alert("Image uploaded successfully");
+            window.location.reload();
+        } catch (error) {
+            alert("Failed to upload image");
+        }
+    };
+
+    const deleteProfilePic = async () => {
+        const isConfirm = window.confirm("Are you sure...");
+
+        if (isConfirm) {
+            try {
+                const response = axios.delete(`${baseUrl}/api/v1/profile-images/${imgId}`)
+                window.location.reload();
+            } catch (error) {
+                alert("something went wrong..")
+            }
+        }
+    }
+
+    const changePw = async () => {
+        
+    }
 
     return (<div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-start">
                 <div className="flex flex-col justify-center items-center">
-                    <div
-                        className={`w-[140px] h-[160px] shadow-md rounded-full flex items-center justify-center 
-                        ${profilePicture ? "bg-no-repeat bg-cover bg-center" : "bg-[#D9D9D9] text-gray-800"}`}
-                        style={profilePicture ? {backgroundImage: `url("${profilePicture}")`} : {}}
-                    >
-                        {!profilePicture && (
-                            <span className="text-4xl font-bold">
+                    <div className="flex flex-col items-center">
+                        <div
+                            className={`w-[140px] h-[160px] shadow-md rounded-full flex items-center justify-center 
+                        ${imageUrl ? "bg-no-repeat bg-cover bg-center" : "bg-[#D9D9D9] text-gray-800"}`}
+                            style={imageUrl ? {backgroundImage: `url("${imageUrl}")`} : {}}
+                        >
+                            {!imageUrl && (
+                                <span className="text-4xl font-bold">
                                         {formData.userName
                                             .split(" ")
                                             .map((word) => word[0])
                                             .join("")
                                         }
                             </span>)
-                        }
+                            }
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800">{formData.userName}</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-800">{formData.userName}</h2>
+                    {isEditing && !imageUrl && (
+                        <NavLink className="text-blue-400 underline hover:text-blue-600" onClick={openModal}>
+                            Add Profile Picture
+                        </NavLink>
+                    )}
+                    {isEditing && imageUrl && (
+                        <div className="flex flex-col">
+                            <NavLink className="text-blue-400 underline hover:text-blue-600" onClick={openModal}>
+                                Change Profile Picture
+                            </NavLink>
+                            <NavLink className="text-red-400 underline hover:text-red-600" onClick={deleteProfilePic}>
+                                Delete
+                            </NavLink>
+                        </div>
+                    )}
+                    {isModalOpen && <FileUploadModal onClose={closeModal} onFileUpload={handleUpload}/>}
                 </div>
                 <div>
                     <div>
@@ -226,6 +290,11 @@ const UserProfile = () => {
                         />
                         {errors.postalCode && (<p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>)}
                     </div>
+                    {isEditing && (
+                        <NavLink className="text-blue-400 underline hover:text-blue-600" onClick={changePw}>
+                            Change Password
+                        </NavLink>
+                    )}
                 </div>
             </div>
             <div className="flex justify-between">
@@ -238,15 +307,18 @@ const UserProfile = () => {
                         Back
                     </button>
                 </div>
-                <div className="flex justify-between items-center gap-2">
-                    <button
-                        type="button"
-                        onClick={deleteAcc}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800"
-                    >
-                        <Delete/>
-                        Delete Profile
-                    </button>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+                    {
+                        isEditing ? null :
+                            <button
+                                type="button"
+                                onClick={deleteAcc}
+                                className="flex items-center gap-2 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500"
+                            >
+                                <Delete/>
+                                Delete Profile
+                            </button>
+                    }
                     {!isEditing && (<button
                         onClick={() => setIsEditing(true)}
                         className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800"
@@ -254,11 +326,11 @@ const UserProfile = () => {
                         <Edit2 className="w-4 h-4"/>
                         Edit Profile
                     </button>)}
-                    {isEditing && (<div className="flex justify-end space-x-4">
+                    {isEditing && (<div className="flex flex-col md:flex-row justify-between items-center gap-2">
                         <button
                             type="button"
                             onClick={handleCancel}
-                            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md bg-gray-300 hover:bg-gray-400"
                         >
                             <X className="w-4 h-4"/>
                             Cancel
