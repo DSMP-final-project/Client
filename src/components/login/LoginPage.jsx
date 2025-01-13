@@ -115,7 +115,7 @@ const LoginPage = () => {
                                     onChange={handleChange}
                                     className={`appearance-none block w-full pl-10 pr-3 py-2 border ${
                                         errors.email ? 'border-red-500' : 'border-gray-300'
-                                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500`}
                                     placeholder="Enter your email"
                                 />
                             </div>
@@ -140,7 +140,7 @@ const LoginPage = () => {
                                     onChange={handleChange}
                                     className={`appearance-none block w-full pl-10 pr-10 py-2 border ${
                                         errors.password ? 'border-red-500' : 'border-gray-300'
-                                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                                    } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500`}
                                     placeholder="Enter your password"
                                 />
                                 <button

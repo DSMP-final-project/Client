@@ -9,7 +9,6 @@ import ShoppingCart from "./components/cart/Cart.jsx";
 import UserProfile from "./components/profile/Profile.jsx";
 import PaymentInterface from "./components/payment/Payment.jsx";
 import ProtectedRoute from "./components/protected-routes/ProtectedRoute.jsx";
-import WarningPopup from "./components/warning/WarningPopup.jsx";
 
 function App() {
     const [productId, setProductId] = useState();

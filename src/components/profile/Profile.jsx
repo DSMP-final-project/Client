@@ -4,6 +4,7 @@ import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import {NavLink, useNavigate} from "react-router-dom";
 import FileUploadModal from "../fileUploade/FileUpload.jsx";
+import ChangePasswordPopup from "../password-change/ChangePassword.jsx";
 
 
 const UserProfile = () => {
@@ -143,10 +144,9 @@ const UserProfile = () => {
             }
         }
     }
-
-    const changePw = async () => {
-        
-    }
+    const [isChangePwOpen, setIsChangePwOpen] = useState(false);
+    const openChangePw=()=> setIsChangePwOpen(true);
+    const closeChangePw=()=>setIsChangePwOpen(false);
 
     return (<div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -291,9 +291,11 @@ const UserProfile = () => {
                         {errors.postalCode && (<p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>)}
                     </div>
                     {isEditing && (
-                        <NavLink className="text-blue-400 underline hover:text-blue-600" onClick={changePw}>
-                            Change Password
-                        </NavLink>
+                        <>
+                            <NavLink className="text-blue-400 underline hover:text-blue-600" onClick={openChangePw}>
+                                Change Password
+                            </NavLink>
+                        </>
                     )}
                 </div>
             </div>
@@ -346,6 +348,7 @@ const UserProfile = () => {
                 </div>
             </div>
         </form>
+        {isChangePwOpen && <ChangePasswordPopup onClose={closeChangePw}/>}
     </div>);
 };
 

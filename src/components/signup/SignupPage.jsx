@@ -44,7 +44,7 @@ const SignUp = () => {
 
         if (!formData.password) {
             newErrors.password = 'Password is required';
-        } else if (formData.password.length < 0) {
+        } else if (formData.password.length < 6) {
             newErrors.password = 'Password must be at least 6 characters';
         }
 
@@ -79,7 +79,6 @@ const SignUp = () => {
                 alert("Something went wrong " + e);
             }
         }
-        console.log(formData)
     };
 
     const handleGenderChange = (e) => {
