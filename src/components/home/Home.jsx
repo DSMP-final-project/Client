@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {ShoppingCart, ChevronLeft, ChevronRight} from 'lucide-react';
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
+import axiosFetch from "../utils/Auth.js";
 
 const Home = (props) => {
-    const baseUrl = import.meta.env.VITE_API_URL
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalProducts, setTotalProducts] = useState(0);
@@ -13,16 +13,18 @@ const Home = (props) => {
     const totalPages = Math.ceil(totalProducts / size);
     const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
+    const token1=Cookies.get("token")
 
     const loadProducts = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/v1/products/list`, {
+            const response = await axiosFetch.get(`/api/v1/products/list`, {
                 params: {
                     'searchText': '',
                     'page': page,
                     'size': size,
-                }
+                },withCredentials: true
             })
+            console.log(response)
             const data = response.data?.object
             setTotalProducts(data?.count)
             setProducts(data?.dataList)
@@ -31,8 +33,11 @@ const Home = (props) => {
         }
     }
 
+
+
     useEffect(() => {
         loadProducts();
+        console.log(token1)
     }, []);
 
 
@@ -46,7 +51,6 @@ const Home = (props) => {
         token ? props.setCartCount((prevCount) => prevCount + 1) :
             navigate("login");
 
-        console.log(id)
        props.readProductId(id)
     };
 

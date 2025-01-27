@@ -5,6 +5,8 @@ import axios from "axios";
 import {NavLink, useNavigate} from "react-router-dom";
 import FileUploadModal from "../fileUploade/FileUpload.jsx";
 import ChangePasswordPopup from "../password-change/ChangePassword.jsx";
+import axiosFetch from "../utils/Auth.js";
+import { toast } from "react-hot-toast";
 
 
 const UserProfile = () => {
@@ -33,17 +35,20 @@ const UserProfile = () => {
     const email = decodedToken?.sub;
 
     const getCustomer = async () => {
-        const response = await axios.get(`${baseUrl}/api/v1/customer/${email}`)
+        try {
+            const response = await axiosFetch.get(`/api/v1/customer/${email}`)
+            profileData = response?.data?.object;
+            const profImg = response.data.object.profileImage;
 
-        profileData = response?.data?.object;
-        const profImg = response.data.object.profileImage;
 
-
-        if (profImg != null) {
-            setImageUrl(profImg.resourceUrl);
-            setImgId(profImg.propertyId);
+            if (profImg != null) {
+                setImageUrl(profImg.resourceUrl);
+                setImgId(profImg.propertyId);
+            }
+            setFormData(profileData)
+        }catch (err){
+            toast.error("something went wrong...");
         }
-        setFormData(profileData)
     }
 
     useEffect(() => {
@@ -71,7 +76,7 @@ const UserProfile = () => {
             setUser(formData);
             setIsEditing(false);
             try {
-                const response = await axios.put(`${baseUrl}/api/v1/customer/update/${email}`, formData)
+                const response = await axiosFetch.put(`/api/v1/customer/update/${email}`)
                 alert("Profile details Updated.")
             } catch (ex) {
                 alert("Something wend wrong")
@@ -100,7 +105,7 @@ const UserProfile = () => {
 
         if (isConfirm) {
             try {
-                const response = await axios.delete(`${baseUrl}/api/v1/customer/${email}`)
+                const response = await axiosFetch.delete(`/api/v1/customer/${email}`)
                 localStorage.removeItem("jwtToken");
                 navigate("/")
             } catch (ex) {
@@ -122,8 +127,8 @@ const UserProfile = () => {
         try {
             let response;
             imageUrl ?
-                response = await axios.put(`${baseUrl}/api/v1/profile-images/${imgId}`, formData)
-                : response = await axios.post(`${baseUrl}/api/v1/profile-images/${email}`, formData);
+                response = await axiosFetch.put(`/api/v1/profile-images/${imgId}`, formData)
+                : response = await axiosFetch.post(`/api/v1/profile-images/${email}`, formData);
 
             alert("Image uploaded successfully");
             window.location.reload();
@@ -137,7 +142,7 @@ const UserProfile = () => {
 
         if (isConfirm) {
             try {
-                const response = axios.delete(`${baseUrl}/api/v1/profile-images/${imgId}`)
+                const response = axiosFetch.delete(`/api/v1/profile-images/${imgId}`)
                 window.location.reload();
             } catch (error) {
                 alert("something went wrong..")
@@ -145,8 +150,8 @@ const UserProfile = () => {
         }
     }
     const [isChangePwOpen, setIsChangePwOpen] = useState(false);
-    const openChangePw=()=> setIsChangePwOpen(true);
-    const closeChangePw=()=>setIsChangePwOpen(false);
+    const openChangePw = () => setIsChangePwOpen(true);
+    const closeChangePw = () => setIsChangePwOpen(false);
 
     return (<div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-6">

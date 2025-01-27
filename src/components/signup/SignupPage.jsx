@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {AlertCircle} from 'lucide-react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import axiosFetch from "../utils/Auth.js";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -72,7 +73,7 @@ const SignUp = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const response = await axios.post(`${baseUrl}/api/v1/users/signup`, formData)
+                const response = await axiosFetch.post(`/api/v1/users/signup`, formData)
                 alert("Sign up successful...");
                 navigate("/login");
             } catch (e) {

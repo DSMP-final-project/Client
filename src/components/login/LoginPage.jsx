@@ -3,6 +3,7 @@ import {Eye, EyeOff, Mail, Lock} from 'lucide-react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
+import axiosFetch from "../utils/Auth.js";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -15,7 +16,6 @@ const LoginPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
-    //const {login}=useAuth();
 
     const validateForm = () => {
         const newErrors = {};
@@ -38,7 +38,7 @@ const LoginPage = () => {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                const response = await axios.post(`${baseUrl}/login`, formData)
+                const response = await axiosFetch.post(`/login`, formData)
                 alert('Login successful!');
                 const token = response?.headers?.getAuthorization();
 
