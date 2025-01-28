@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {Eye, EyeOff, Mail, Lock} from 'lucide-react';
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import axiosFetch from "../utils/Auth.js";
@@ -10,7 +9,6 @@ const LoginPage = () => {
         email: '',
         password: ''
     });
-    const baseUrl = import.meta.env.VITE_API_URL;
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -38,32 +36,25 @@ const LoginPage = () => {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                const response = await axiosFetch.post(`/login`, formData)
-                alert('Login successful!');
+                const response = await axiosFetch.post(`/login`, formData);
                 const token = response?.headers?.getAuthorization();
+                const decodedToken = jwtDecode(token);
+                localStorage.setItem("jwtToken", token);
 
-                if (token) {
-                    const decodedToken = jwtDecode(token);
-                    localStorage.setItem("jwtToken", token);
+                const roles = decodedToken.authorities
+                    .filter((auth) => auth.authority.startsWith("ROLE_"))
+                    .map((auth) => auth.authority);
 
-                    // Filter roles from authorities
-                    const roles = decodedToken.authorities
-                        .filter((auth) => auth.authority.startsWith("ROLE_"))
-                        .map((auth) => auth.authority);
-
-                    if (roles.includes("ROLE_USER")) {
-                        navigate("/")
-                    }
-
-                    if (roles.includes("ROLE_ADMIN")) {
-                        window.location.href = "http://localhost:4200";
-                    }
+                if (roles.includes("ROLE_ADMIN")) {
+                    navigate("/admin");
+                } else if (roles.includes("ROLE_USER")) {
+                    navigate("/");
                 } else {
-                    console.error("No token found in the response");
+                    throw new Error("Invalid roles or permissions.");
                 }
             } catch (error) {
-                console.error('Login error:', error);
-                setErrors({submit: 'Invalid email or password'});
+                console.error("Login error:", error);
+                setErrors({submit: "Invalid email or password"});
             } finally {
                 setIsLoading(false);
             }

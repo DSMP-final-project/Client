@@ -4,17 +4,17 @@ import {
     ShoppingCart,
     User,
     Menu,
-    X,
-    Heart
+    X
 } from 'lucide-react';
 import {NavLink, useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
+import axiosFetch from "../utils/Auth.js";
 
 const NavBar = ({cartCount}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     //const [cartCount, setCartCount] = useState(0);
-
-    const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
+    const cookie = Cookies.get("token");
 
     const categories = [
         "Cosmetics",
@@ -23,9 +23,13 @@ const NavBar = ({cartCount}) => {
         "Accessories"
     ];
 
-    const handleSignOut = () => {
-        localStorage.removeItem("jwtToken");
-        window.location.reload();
+    const handleSignOut = async () => {
+        try {
+            await axiosFetch.get('auth/logout');
+            location.reload()
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
     }
 
     const goToCart = () => {
@@ -88,7 +92,7 @@ const NavBar = ({cartCount}) => {
                             )}
                         </button>
                         {
-                            token ? (
+                            cookie ? (
 
                                 <NavLink
                                     to="/"
@@ -170,7 +174,7 @@ const NavBar = ({cartCount}) => {
                         {/* Mobile Sign In Button */}
                         <div className="pt-4">
                             {
-                                token ? <NavLink
+                                cookie ? <NavLink
                                     to="/"
                                     className="px-4 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
                                     onClick={handleSignOut}

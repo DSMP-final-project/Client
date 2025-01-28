@@ -9,6 +9,8 @@ import ShoppingCart from "./components/cart/Cart.jsx";
 import UserProfile from "./components/profile/Profile.jsx";
 import PaymentInterface from "./components/payment/Payment.jsx";
 import ProtectedRoute from "./components/protected-routes/ProtectedRoute.jsx";
+import PrivateRoute from "./components/protected-routes/PrivateRoute.jsx";
+import AdminDashboard from "./components/dashboard/Admin-dashboard.jsx";
 
 function App() {
     const [productId, setProductId] = useState();
@@ -27,7 +29,13 @@ function App() {
         <div>
             <div>
                 <Routes>
+
                     <Route path="/" element={<LandingPage readProductId={readProductId}/>}/>
+
+                    <Route path="/admin" element={<PrivateRoute allowedRoles={["ADMIN"]} />}>
+                        <Route index element={<AdminDashboard />} />
+                    </Route>
+
                     <Route path="/cart" element={
                         <ProtectedRoute>
                             <ShoppingCart productId={productId}/>
