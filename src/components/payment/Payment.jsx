@@ -113,53 +113,47 @@ const PaymentInterface = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div className="max-w-md mx-auto p-6 bg-primary rounded-lg shadow-lg">
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Payment Details</h2>
-                <Lock className="text-gray-600 w-6 h-6" />
+                <h2 className="text-2xl font-bold text-white">Payment Details</h2>
+                <Lock className="text-accent w-6 h-6" />
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Amount Input */}
                 <div className="relative">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Amount
-                    </label>
+                    <label className="block text-sm font-medium text-white mb-1">Amount</label>
                     <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-accent w-5 h-5" />
                         <input
                             type="number"
                             name="amount"
                             value={paymentDetails.amount}
                             onChange={handleChange}
                             placeholder="0.00"
-                            className={`pl-10 w-full p-3 border rounded-lg ${
-                                errors.amount ? 'border-red-500' : 'border-gray-300'
+                            className={`pl-10 w-full p-3 border rounded-lg bg-primary text-white placeholder-gray-300 ${
+                                errors.amount ? 'border-red-500' : 'border-gray-700'
                             }`}
                             step="0.01"
                             min="0"
                         />
                     </div>
-                    {errors.amount && (
-                        <p className="text-red-500 text-sm mt-1">{errors.amount}</p>
-                    )}
+                    {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount}</p>}
                 </div>
 
                 {/* Card Number Input */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Card Number
-                    </label>
+                    <label className="block text-sm font-medium text-white mb-1">Card Number</label>
                     <div className="relative">
-                        <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-accent w-5 h-5" />
                         <input
                             type="text"
                             name="cardNumber"
                             value={paymentDetails.cardNumber}
                             onChange={handleChange}
                             placeholder="0000 0000 0000 0000"
-                            className={`pl-10 w-full p-3 border rounded-lg ${
-                                errors.cardNumber ? 'border-red-500' : 'border-gray-300'
+                            className={`pl-10 w-full p-3 border rounded-lg bg-primary text-white placeholder-gray-300 ${
+                                errors.cardNumber ? 'border-red-500' : 'border-gray-700'
                             }`}
                             maxLength="19"
                         />
@@ -171,17 +165,15 @@ const PaymentInterface = () => {
 
                 {/* Card Holder Input */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Card Holder Name
-                    </label>
+                    <label className="block text-sm font-medium text-white mb-1">Card Holder Name</label>
                     <input
                         type="text"
                         name="cardHolder"
                         value={paymentDetails.cardHolder}
                         onChange={handleChange}
                         placeholder="JOHN DOE"
-                        className={`w-full p-3 border rounded-lg ${
-                            errors.cardHolder ? 'border-red-500' : 'border-gray-300'
+                        className={`w-full p-3 border rounded-lg bg-primary text-white placeholder-gray-300 ${
+                            errors.cardHolder ? 'border-red-500' : 'border-gray-700'
                         }`}
                     />
                     {errors.cardHolder && (
@@ -192,17 +184,15 @@ const PaymentInterface = () => {
                 <div className="grid grid-cols-2 gap-4">
                     {/* Expiry Date Input */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Expiry Date
-                        </label>
+                        <label className="block text-sm font-medium text-white mb-1">Expiry Date</label>
                         <input
                             type="text"
                             name="expiryDate"
                             value={paymentDetails.expiryDate}
                             onChange={handleChange}
                             placeholder="MM/YY"
-                            className={`w-full p-3 border rounded-lg ${
-                                errors.expiryDate ? 'border-red-500' : 'border-gray-300'
+                            className={`w-full p-3 border rounded-lg bg-primary text-white placeholder-gray-300 ${
+                                errors.expiryDate ? 'border-red-500' : 'border-gray-700'
                             }`}
                             maxLength="5"
                         />
@@ -213,45 +203,37 @@ const PaymentInterface = () => {
 
                     {/* CVV Input */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            CVV
-                        </label>
+                        <label className="block text-sm font-medium text-white mb-1">CVV</label>
                         <input
                             type="password"
                             name="cvv"
                             value={paymentDetails.cvv}
                             onChange={handleChange}
                             placeholder="•••"
-                            className={`w-full p-3 border rounded-lg ${
-                                errors.cvv ? 'border-red-500' : 'border-gray-300'
+                            className={`w-full p-3 border rounded-lg bg-primary text-white placeholder-gray-300 ${
+                                errors.cvv ? 'border-red-500' : 'border-gray-700'
                             }`}
                             maxLength="4"
                         />
-                        {errors.cvv && (
-                            <p className="text-red-500 text-sm mt-1">{errors.cvv}</p>
-                        )}
+                        {errors.cvv && <p className="text-red-500 text-sm mt-1">{errors.cvv}</p>}
                     </div>
                 </div>
 
                 <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                    className="w-full bg-accent text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
                     {isProcessing ? (
-                        <span className="flex items-center justify-center">
-              Processing...
-            </span>
+                        <span className="flex items-center justify-center">Processing...</span>
                     ) : (
-                        <span className="flex items-center justify-center">
-              Pay Now
-            </span>
+                        <span className="flex items-center justify-center">Pay Now</span>
                     )}
                 </button>
             </form>
 
-            <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
-                <Lock className="w-4 h-4 mr-2" />
+            <div className="mt-6 flex items-center justify-center text-sm text-white">
+                <Lock className="w-4 h-4 mr-2 text-accent" />
                 Your payment info is secure and encrypted
             </div>
         </div>

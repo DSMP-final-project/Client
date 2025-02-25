@@ -45,41 +45,47 @@ const Home = (props) => {
         token ? props.setCartCount((prevCount) => prevCount + 1) :
             navigate("login");
 
-       props.readProductId(id)
+        props.readProductId(id)
     };
+
+    const showProduct = (id) => {
+        navigate(`product/${id}`)
+    }
 
     return (
         <div className="container mx-auto px-4 py-8">
+            {/* Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Featured Products</h1>
-                <p className="mt-2 text-gray-600">Discover our latest collection of premium products</p>
+                <h1 className="text-3xl font-bold text-white">Featured Products</h1>
+                <p className="mt-2 text-white">Discover our latest collection of premium products</p>
             </div>
 
+            {/* Product Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
-                    <div key={product.propertyId}
-                         className="bg-gray-400 rounded-lg shadow-md overflow-hidden flex flex-col">
-                        {product.productImages?.map((image) => (
-                            <div className="w-full" key={image.propertyId}>
-                                <img
-                                    src={image.resourceUrl}
-                                    alt={product.name}
-                                    className="w-full h-48 object-cover"
-                                />
-                            </div>
-                        ))}
+                    <div
+                        key={product.propertyId}
+                        className="bg-primary rounded-lg shadow-md overflow-hidden flex flex-col"
+                        onClick={() => showProduct(product.propertyId)}
+                    >
+                        <div className="w-full">
+                            <img
+                                src={product?.productImages[0]?.resourceUrl}
+                                alt={product.name}
+                                className="w-full h-48 object-cover"
+                            />
+                        </div>
                         <div className="p-4 flex-grow">
-                            <h2 className="text-xl font-semibold mb-2">Product</h2>
-                            <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-                            <p className="text-2xl font-bold text-gray-700">${product.unitPrice}</p>
+                            <h2 className="text-xl font-semibold text-white mb-2">{product.name || 'Product'}</h2>
+                            <p className="text-white text-sm mb-4">{product.description}</p>
+                            <p className="text-2xl font-bold text-white">${product.unitPrice}</p>
                         </div>
                         <div className="p-4 pt-0">
                             <button
-                                onClick={()=>handleAddToCart(product.propertyId)}
-                                className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-800
-                                transition-colors flex items-center justify-center gap-2"
+                                onClick={() => handleAddToCart(product.propertyId)}
+                                className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
                             >
-                                <ShoppingCart className="w-4 h-4"/>
+                                <ShoppingCart className="w-4 h-4 text-accent"/>
                                 Add to Cart
                             </button>
                         </div>
@@ -87,14 +93,15 @@ const Home = (props) => {
                 ))}
             </div>
 
+            {/* Pagination */}
             <div className="mt-8 flex justify-center items-center gap-2">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                     className={`p-2 rounded-md border ${
                         currentPage === 1
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-accent hover:bg-gray-50'
                     }`}
                 >
                     <ChevronLeft className="w-4 h-4"/>
@@ -106,8 +113,8 @@ const Home = (props) => {
                         onClick={() => handlePageChange(index + 1)}
                         className={`px-3 py-1 rounded-md ${
                             currentPage === index + 1
-                                ? 'bg-gray-700 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-50 border'
+                                ? 'bg-accent text-white'
+                                : 'bg-white text-accent hover:bg-gray-50 border'
                         }`}
                     >
                         {index + 1}
@@ -119,9 +126,9 @@ const Home = (props) => {
                     disabled={currentPage === totalPages}
                     className={`p-2 rounded-md border ${
                         currentPage === totalPages
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
+                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-accent hover:bg-gray-50'
+                    } `}
                 >
                     <ChevronRight className="w-4 h-4"/>
                 </button>
