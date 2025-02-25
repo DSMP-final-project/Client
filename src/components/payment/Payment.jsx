@@ -222,7 +222,8 @@ const PaymentInterface = () => {
                 <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full bg-accent text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                    className="w-full bg-accent text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors
+                    disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
                     {isProcessing ? (
                         <span className="flex items-center justify-center">Processing...</span>

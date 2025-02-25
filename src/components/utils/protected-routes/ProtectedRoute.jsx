@@ -1,4 +1,4 @@
-import WarningPopup from "../warning/WarningPopup.jsx";
+import WarningPopup from "../../warning/WarningPopup.jsx";
 import Cookies from "js-cookie";
 
 const ProtectedRoute = ({children}) => {

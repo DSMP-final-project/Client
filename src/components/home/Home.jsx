@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ShoppingCart, ChevronLeft, ChevronRight, Star, Circle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import axiosFetch from '../utils/Auth.js';
+import axiosFetch from '../utils/auth/Auth.js';
 
 const Home = (props) => {
     const [products, setProducts] = useState([]);
@@ -113,7 +113,8 @@ const Home = (props) => {
                                     e.stopPropagation();
                                     handleAddToCart(product.propertyId);
                                 }}
-                                className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
+                                className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-opacity-90
+                                transition-colors flex items-center justify-center gap-2"
                             >
                                 <ShoppingCart className="w-4 h-4 text-accent" />
                                 Add to Cart

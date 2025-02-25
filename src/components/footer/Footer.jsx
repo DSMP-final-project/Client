@@ -28,15 +28,15 @@ const Footer = () => {
                         </p>
                         <div className="space-y-2">
                             <div className="flex items-center gap-2">
-                                <MapPin className="w-5 h-5 text-accent" />
+                                <MapPin className="w-5 h-5 text-accent"/>
                                 <p>123 Commerce St, Business City, 12345</p>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Phone className="w-5 h-5 text-accent" />
+                                <Phone className="w-5 h-5 text-accent"/>
                                 <p>+1 (234) 567-8900</p>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Mail className="w-5 h-5 text-accent" />
+                                <Mail className="w-5 h-5 text-accent"/>
                                 <p>contact@secretsanta.com</p>
                             </div>
                         </div>
@@ -46,7 +46,8 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
                         <ul className="space-y-2">
-                            {['About Us', 'Contact Us', 'Products', 'Privacy Policy', 'Terms & Conditions', 'Returns & Exchanges', 'Shipping Information'].map((link) => (
+                            {['About Us', 'Contact Us', 'Products', 'Privacy Policy', 'Terms & Conditions',
+                                'Returns & Exchanges', 'Shipping Information'].map((link) => (
                                 <li key={link}>
                                     <a href="#" className="hover:text-light transition-colors">
                                         {link}
@@ -60,7 +61,8 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-white mb-4">Categories</h3>
                         <ul className="space-y-2">
-                            {['Cosmetics', 'Clothing', 'Accessories', 'Electronics', 'Trending'].map((category) => (
+                            {['Cosmetics', 'Clothing', 'Accessories', 'Electronics', 'Trending'].map((category
+                            ) => (
                                 <li key={category}>
                                     <a href="#" className="hover:text-light transition-colors">
                                         {category}
@@ -83,9 +85,10 @@ const Footer = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="bg-accent px-4 py-2 rounded-r-md hover:bg-opacity-90 transition-colors text-white"
+                                    className="bg-accent px-4 py-2 rounded-r-md hover:bg-opacity-90 transition-colors
+                                     text-white"
                                 >
-                                    <Send className="w-5 h-5" />
+                                    <Send className="w-5 h-5"/>
                                 </button>
                             </div>
                         </form>
@@ -93,9 +96,10 @@ const Footer = () => {
                         <div>
                             <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
                             <div className="flex space-x-4">
-                                {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
+                                {[Facebook, Twitter, Instagram, Linkedin].map((Icon,
+                                                                               index) => (
                                     <a key={index} href="#" className="hover:text-light transition-colors">
-                                        <Icon className="w-6 h-6 text-accent" />
+                                        <Icon className="w-6 h-6 text-accent"/>
                                     </a>
                                 ))}
                             </div>

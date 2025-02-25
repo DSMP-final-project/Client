@@ -1,6 +1,6 @@
 import {Mail, MapPin, Phone} from 'lucide-react';
 import Cookies from 'js-cookie';
-import axiosFetch from "../utils/Auth.js";
+import axiosFetch from "../utils/auth/Auth.js";
 import {useEffect, useState} from "react";
 import FileUploadModal from "./FileUploadModel.jsx";
 

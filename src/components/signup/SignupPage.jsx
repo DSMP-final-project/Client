@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {AlertCircle} from 'lucide-react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import axiosFetch from "../utils/Auth.js";
+import axiosFetch from "../utils/auth/Auth.js";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({

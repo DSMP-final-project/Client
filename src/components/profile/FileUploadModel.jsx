@@ -25,7 +25,9 @@ const FileUploadModal = ({ onClose, onFileUpload, hasImg, onDelete }) => {
                 <input
                     type="file"
                     onChange={handleFileChange}
-                    className="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-light file:text-primary hover:file:bg-accent hover:file:text-white"
+                    className="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg
+                    file:border-0 file:text-sm file:bg-light file:text-primary hover:file:bg-accent
+                    hover:file:text-white"
                 />
                 {selectedFile && (
                     <p className="text-white mt-2 text-sm">Selected File: {selectedFile.name}</p>
@@ -42,7 +44,8 @@ const FileUploadModal = ({ onClose, onFileUpload, hasImg, onDelete }) => {
                         <button
                             type="button"
                             onClick={onDelete}
-                            className="flex items-center gap-2 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500 mr-2 transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-red-400 text-white rounded-md
+                            hover:bg-red-500 mr-2 transition-colors"
                         >
                             Delete
                         </button>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import axiosFetch from "../utils/Auth.js";
-import ReviewPopup from "../../review/ReviewPopup.jsx";
+import axiosFetch from "../utils/auth/Auth.js";
+import ReviewPopup from "../review/ReviewPopup.jsx";
 
 const ProductDetails = () => {
     const [newReview, setNewReview] = useState('');
@@ -118,7 +118,8 @@ const ProductDetails = () => {
                                 {product.sizes.map((size) => (
                                     <button
                                         key={size}
-                                        className="w-12 h-12 border border-gray-700 text-white rounded-md hover:border-light"
+                                        className="w-12 h-12 border border-gray-700 text-white rounded-md
+                                        hover:border-light"
                                     >
                                         {size}
                                     </button>
@@ -132,7 +133,8 @@ const ProductDetails = () => {
                                 {product.colors.map((color) => (
                                     <button
                                         key={color}
-                                        className="px-4 py-2 border border-gray-700 text-white rounded-md hover:border-light"
+                                        className="px-4 py-2 border border-gray-700 text-white rounded-md
+                                        hover:border-light"
                                     >
                                         {color}
                                     </button>
@@ -169,7 +171,8 @@ const ProductDetails = () => {
                         <div key={review.id} className="p-4 border border-gray-700 rounded-lg bg-primary">
                             <div className="flex items-start gap-4">
                                 <div
-                                    className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white">
+                                    className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center
+                                    text-white">
                                     {review.user[0]}
                                 </div>
                                 <div className="flex-1">

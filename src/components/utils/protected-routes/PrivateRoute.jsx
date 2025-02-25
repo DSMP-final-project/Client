@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axiosFetch from "../utils/Auth.js";
+import axiosFetch from "../auth/Auth.js";
 import {Navigate, Outlet} from "react-router-dom";
 
 const PrivateRoute = ({allowedRoles}) => {

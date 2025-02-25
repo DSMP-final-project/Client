@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Star} from 'lucide-react';
 import {useParams} from 'react-router-dom';
 import Cookies from 'js-cookie';
-import axiosFetch from "../components/utils/Auth.js";
+import axiosFetch from "../utils/auth/Auth.js";
 
 const ReviewPopup = (props) => {
     const [rating, setRating] = useState(0);
@@ -51,14 +51,16 @@ const ReviewPopup = (props) => {
                         placeholder="Share your experience..."
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        className="w-full min-h-[100px] p-3 border border-gray-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-accent bg-primary text-white placeholder-gray-300"
+                        className="w-full min-h-[100px] p-3 border border-gray-700 rounded-lg resize-none
+                        focus:outline-none focus:ring-2 focus:ring-accent bg-primary text-white placeholder-gray-300"
                     />
                 </div>
 
                 {/* Footer */}
                 <div className="p-4 border-t border-gray-700 flex justify-end space-x-2">
                     <button
-                        className="px-4 py-2 border border-gray-700 rounded-lg text-white hover:bg-gray-700 transition-colors"
+                        className="px-4 py-2 border border-gray-700 rounded-lg text-white hover:bg-gray-700
+                        transition-colors"
                         onClick={props.onClose}
                     >
                         Cancel

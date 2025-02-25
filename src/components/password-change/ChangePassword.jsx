@@ -43,7 +43,8 @@ const ChangePasswordPopup = ({onClose}) => {
         if (formValidation()) {
             if (formData.confirmPassword === (formData.newPassword)) {
                 try {
-                    const response = await axios.put(`http://localhost:8083/api/v1/users/password/${email}`, formData)
+                    const response =
+                        await axios.put(`http://localhost:8083/api/v1/users/password/${email}`, formData)
                     onClose();
                     alert("Password Change Successful..")
                 } catch (error) {
@@ -84,7 +85,8 @@ const ChangePasswordPopup = ({onClose}) => {
                                     type={showPassword ? 'text' : 'password'}
                                     value={formData.oldPassword}
                                     onChange={handleChange}
-                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 ${
+                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border 
+                                    rounded-md shadow-sm placeholder-gray-400 ${
                                         errors['oldPassword'] ? 'border-red-500' : 'border-gray-300'
                                     } focus:outline-none focus:ring-gray-500 focus:border-gray-500`}
                                     placeholder="Old password"
@@ -119,7 +121,8 @@ const ChangePasswordPopup = ({onClose}) => {
                                     type={showPassword ? 'text' : 'password'}
                                     value={formData.newPassword}
                                     onChange={handleChange}
-                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 ${
+                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md 
+                                    shadow-sm placeholder-gray-400 ${
                                         errors['newPassword'] ? 'border-red-500' : 'border-gray-300'
                                     } focus:outline-none focus:ring-gray-500 focus:border-gray-500`}
                                     placeholder="New password"
@@ -154,7 +157,8 @@ const ChangePasswordPopup = ({onClose}) => {
                                     type={showPassword ? 'text' : 'password'}
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
-                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 ${
+                                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md 
+                                    shadow-sm placeholder-gray-400 ${
                                         errors['confirmPassword'] ? 'border-red-500' : 'border-gray-300'
                                     } focus:outline-none focus:ring-gray-500 focus:border-gray-500`}
                                     placeholder="Confirm password"
