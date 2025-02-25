@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
     Search,
     ShoppingCart,
@@ -14,6 +14,8 @@ const NavBar = ({cartCount}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     //const [cartCount, setCartCount] = useState(0);
     const navigate = useNavigate();
+    const [isScroll, setIsScroll] = useState(false)
+    const [lastScrollY, setLastScrollY] = useState(0);
     const cookie = Cookies.get("token");
 
     const categories = [
@@ -40,8 +42,21 @@ const NavBar = ({cartCount}) => {
         navigate("/profile")
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScroll = window.scrollY
+            if (currentScroll > 50) {
+                setIsScroll(true)
+            } else {
+                setIsScroll(false)
+            }
+            setLastScrollY(currentScroll);
+        };
+        window.addEventListener('scroll', handleScroll, {passive: true});
+    }, [lastScrollY]);
+
     return (
-        <nav className="bg-primary shadow-md rounded-md">
+        <nav className={` shadow-md rounded-b-md sticky top-0 ${isScroll ? "bg-primary/90" : "bg-primary"}`}>
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -71,7 +86,7 @@ const NavBar = ({cartCount}) => {
                                 className="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:outline-none focus:border-accent text-white bg-primary placeholder-gray-300 text-sm"
                             />
                             <button className="absolute right-2 top-1.5 text-accent hover:text-light">
-                                <Search className="w-4 h-4" />
+                                <Search className="w-4 h-4"/>
                             </button>
                         </div>
                     </div>
@@ -79,12 +94,13 @@ const NavBar = ({cartCount}) => {
                     {/* Desktop Icons */}
                     <div className="hidden md:flex items-center space-x-6">
                         <button className="text-accent hover:text-light" onClick={goProfile}>
-                            <User className="w-6 h-6" />
+                            <User className="w-6 h-6"/>
                         </button>
                         <button className="text-accent hover:text-light relative" onClick={goToCart}>
-                            <ShoppingCart className="w-6 h-6" />
+                            <ShoppingCart className="w-6 h-6"/>
                             {cartCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-warning text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                <span
+                                    className="absolute -top-2 -right-2 bg-warning text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
                 </span>
                             )}
@@ -113,7 +129,7 @@ const NavBar = ({cartCount}) => {
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="text-accent hover:text-light"
                         >
-                            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            {isMenuOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
                         </button>
                     </div>
                 </div>
@@ -131,7 +147,7 @@ const NavBar = ({cartCount}) => {
                                 className="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:outline-none focus:border-accent text-white bg-primary placeholder-gray-300 text-sm"
                             />
                             <button className="absolute right-2 top-1.5 text-accent">
-                                <Search className="w-4 h-4" />
+                                <Search className="w-4 h-4"/>
                             </button>
                         </div>
 
@@ -152,16 +168,17 @@ const NavBar = ({cartCount}) => {
                                 className="text-accent hover:text-light flex flex-col items-center"
                                 onClick={goProfile}
                             >
-                                <User className="w-6 h-6" />
+                                <User className="w-6 h-6"/>
                                 <span className="text-sm text-white">Account</span>
                             </button>
                             <button
                                 className="text-accent hover:text-light flex flex-col items-center relative"
                                 onClick={goToCart}
                             >
-                                <ShoppingCart className="w-6 h-6" />
+                                <ShoppingCart className="w-6 h-6"/>
                                 {cartCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-warning text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                    <span
+                                        className="absolute -top-2 -right-2 bg-warning text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartCount}
                   </span>
                                 )}

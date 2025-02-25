@@ -10,6 +10,7 @@ import UserProfile from "./components/profile/Profile.jsx";
 import PaymentInterface from "./components/payment/Payment.jsx";
 import ProtectedRoute from "./components/protected-routes/ProtectedRoute.jsx";
 import ProductDetails from "./components/product-details/ProductDetails.jsx";
+import ReviewPopup from "./review/ReviewPopup.jsx";
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/sign-up" element={<SignupPage/>}/>
                     <Route path="*" element={<NotFound/>}/>
                     <Route path="/product/:id" element={<ProductDetails/>}/>
+                    <Route path="product/review/:id" element={<ReviewPopup/>}/>
                 </Routes>
             </div>
         </div>

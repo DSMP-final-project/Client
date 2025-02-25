@@ -19,11 +19,11 @@ const LandingPage = (props) => {
 
 
     return (
-        <>
+        <div className="w-full">
             <NavBar cartCount={cartCount}/>
             <Home setCartCount={setCartCount} readProductId={readProductId}/>
             <Footer/>
-        </>
+        </div>
     )
 }
 
