@@ -88,7 +88,7 @@ const SignUp = () => {
 
     const renderField = (name, label, type, placeholder) => (
         <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-start" htmlFor={name}>
+            <label className="block text-sm font-medium mb-1 text-start text-white" htmlFor={name}>
                 {label}
             </label>
             <input
@@ -98,13 +98,13 @@ const SignUp = () => {
                 value={formData[name]}
                 onChange={handleChange}
                 placeholder={placeholder}
-                className={`w-full p-2 border rounded-md ${
-                    errors[name] ? 'border-red-500' : 'border-gray-300'
-                } focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                className={`w-full p-2 border bg-primary text-white placeholder-gray-300 rounded-md ${
+                    errors[name] ? 'border-red-500' : 'border-gray-700'
+                } focus:outline-none focus:ring-2 focus:ring-accent`}
             />
             {errors[name] && (
                 <div className="mt-2 text-red-500 text-sm flex items-center gap-1">
-                    <AlertCircle className="h-4 w-4"/>
+                    <AlertCircle className="h-4 w-4 text-accent" />
                     <span>{errors[name]}</span>
                 </div>
             )}
@@ -113,13 +113,14 @@ const SignUp = () => {
 
     const radio = (value) => (
         <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-start">
+            <label className="block text-sm font-medium mb-1 text-start text-white">
                 <input
                     type="radio"
                     name="gender"
                     value={value}
                     checked={formData.gender === value}
                     onChange={handleGenderChange}
+                    className="mr-2 text-accent focus:ring-accent border-gray-700"
                 />
                 {value}
             </label>
@@ -127,15 +128,15 @@ const SignUp = () => {
     );
 
     return (
-        <div className="w-full max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+        <div className="w-full max-w-lg mx-auto bg-primary shadow-lg rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-center mb-6 text-white">Sign Up</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 {renderField('firstName', 'Firstname', 'text', 'First Name')}
                 {renderField('lastName', 'Lastname', 'text', 'Last Name')}
                 {renderField('userName', 'Username', 'text', 'Choose a username')}
                 <div className="flex gap-5">
-                    {radio("MALE")}
-                    {radio("FEMALE")}
+                    {radio('MALE')}
+                    {radio('FEMALE')}
                 </div>
                 {renderField('email', 'Email', 'email', 'Enter your email')}
                 {renderField('password', 'Password', 'password', 'Choose a password')}
@@ -144,15 +145,15 @@ const SignUp = () => {
                 {renderField('postalCode', 'Postalcode', 'text', 'Postalcode')}
                 <button
                     type="submit"
-                    className="w-full bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700"
+                    className="w-full bg-accent text-white p-2 rounded-md hover:bg-opacity-90 transition-colors"
                 >
                     Sign Up
                 </button>
             </form>
             <div className="mt-6">
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-sm text-white">
                     Already have an account?{' '}
-                    <a href="/login" className="font-medium text-gray-700 hover:text-gray-800">
+                    <a href="/login" className="font-medium text-white hover:text-light">
                         Sign in
                     </a>
                 </p>

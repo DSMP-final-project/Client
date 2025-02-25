@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {ShoppingCart, ChevronLeft, ChevronRight} from 'lucide-react';
-import {useNavigate} from "react-router-dom";
-import axiosFetch from "../utils/Auth.js";
+import { useEffect, useState } from 'react';
+import { ShoppingCart, ChevronLeft, ChevronRight, Star, Circle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import axiosFetch from '../utils/Auth.js';
 
 const Home = (props) => {
     const [products, setProducts] = useState([]);
@@ -10,7 +10,7 @@ const Home = (props) => {
     const size = 4;
     let page = 0;
     const totalPages = Math.ceil(totalProducts / size);
-    const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem('jwtToken');
     const navigate = useNavigate();
 
     const loadProducts = async () => {
@@ -20,20 +20,19 @@ const Home = (props) => {
                     'searchText': '',
                     'page': page,
                     'size': size,
-                }
-            })
-            const data = response.data?.object
-            setTotalProducts(data?.count)
-            setProducts(data?.dataList)
+                },
+            });
+            const data = response.data?.object;
+            setTotalProducts(data?.count);
+            setProducts(data?.dataList);
         } catch (error) {
-            console.error("Something went wrong!...", error)
+            console.error('Something went wrong!...', error);
         }
-    }
+    };
 
     useEffect(() => {
         loadProducts();
     }, []);
-
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -42,15 +41,13 @@ const Home = (props) => {
     };
 
     const handleAddToCart = (id) => {
-        token ? props.setCartCount((prevCount) => prevCount + 1) :
-            navigate("login");
-
-        props.readProductId(id)
+        token ? props.setCartCount((prevCount) => prevCount + 1) : navigate('login');
+        props.readProductId(id);
     };
 
     const showProduct = (id) => {
-        navigate(`product/${id}`)
-    }
+        navigate(`product/${id}`);
+    };
 
     return (
         <div className="container mx-auto px-4 py-2">
@@ -75,17 +72,50 @@ const Home = (props) => {
                                 className="w-full h-48 object-cover"
                             />
                         </div>
-                        <div className="p-4 flex-grow">
-                            <h2 className="text-xl font-semibold text-white mb-2">{product.name || 'Product'}</h2>
-                            <p className="text-white text-sm mb-4">{product.description}</p>
-                            <p className="text-2xl font-bold text-white">${product.unitPrice}</p>
+                        <div className="p-4 flex-grow grid grid-cols-2 gap-2">
+                            {/* Left Column: Product Details */}
+                            <div>
+                                <h2 className="text-xl font-semibold text-white mb-2">{product.name || 'Product'}</h2>
+                                <p className="text-2xl font-bold text-white">${product.unitPrice}</p>
+                                <div className="flex items-center gap-1 mt-2">
+                                    <Star className="w-4 h-4 text-accent" />
+                                    <span className="text-white text-sm">
+                    {product.reviewCount || 0} {product.reviewCount === 1 ? 'Review' : 'Reviews'}
+                  </span>
+                                </div>
+                            </div>
+                            {/* Right Column: Status and Discount */}
+                            <div className="flex flex-col items-end gap-2">
+                                {/* Stock Status */}
+                                <div className="flex items-center gap-1">
+                                    <Circle
+                                        className={`w-3 h-3 ${
+                                            product.isAvailable !== false ? 'text-green-500' : 'text-red-500'
+                                        }`}
+                                    />
+                                    <span className="text-white text-xs">
+                    {product.isAvailable !== false ? 'In Stock' : 'Out of Stock'}
+                  </span>
+                                </div>
+                                {/* Discount Status */}
+                                {product.discount && product.discount > 0 ? (
+                                    <div className="bg-accent text-white text-xs font-semibold px-2 py-1 rounded-full">
+                                        {product.discount}% OFF
+                                    </div>
+                                ) : (
+                                    <span className="text-white text-xs">No Discount</span>
+                                )}
+                            </div>
                         </div>
                         <div className="p-4 pt-0">
                             <button
-                                onClick={() => handleAddToCart(product.propertyId)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAddToCart(product.propertyId);
+                                }}
                                 className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
                             >
-                                <ShoppingCart className="w-4 h-4 text-accent"/>
+                                <ShoppingCart className="w-4 h-4 text-accent" />
                                 Add to Cart
                             </button>
                         </div>
@@ -104,7 +134,7 @@ const Home = (props) => {
                             : 'bg-white text-accent hover:bg-gray-50'
                     }`}
                 >
-                    <ChevronLeft className="w-4 h-4"/>
+                    <ChevronLeft className="w-4 h-4" />
                 </button>
 
                 {[...Array(totalPages)].map((_, index) => (
@@ -128,9 +158,9 @@ const Home = (props) => {
                         currentPage === totalPages
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-white text-accent hover:bg-gray-50'
-                    } `}
+                    }`}
                 >
-                    <ChevronRight className="w-4 h-4"/>
+                    <ChevronRight className="w-4 h-4" />
                 </button>
             </div>
         </div>

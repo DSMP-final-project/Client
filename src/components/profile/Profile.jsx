@@ -10,12 +10,13 @@ function Profile() {
     const [isEditing, setIsEditing] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [profile, setProfile] = useState({
-        name: "Sarah Anderson",
+        firstName: "Sarah Anderson",
+        lastName: "Sarah Anderson",
+        userName: "Sarah Anderson",
         email: "sarah.anderson@example.com",
         phone: "+1 (555) 123-4567",
-        location: "San Francisco, CA",
-        occupation: "Senior Product Designer",
-        bio: "Passionate about creating user-centered designs that make a difference. Always learning and exploring new ways to improve user experiences."
+        address: "San Francisco, CA",
+        postalCode: "Senior Product Designer"
     });
 
     const [editedProfile, setEditedProfile] = useState(profile);
