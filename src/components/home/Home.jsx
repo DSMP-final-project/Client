@@ -25,6 +25,7 @@ const Home = (props) => {
             const data = response.data?.object;
             setTotalProducts(data?.count);
             setProducts(data?.dataList);
+            console.log(data)
         } catch (error) {
             console.error('Something went wrong!...', error);
         }
@@ -68,14 +69,14 @@ const Home = (props) => {
                         <div className="w-full">
                             <img
                                 src={product?.productImages[0]?.resourceUrl}
-                                alt={product.name}
+                                alt={product.productName}
                                 className="w-full h-48 object-cover"
                             />
                         </div>
                         <div className="p-4 flex-grow grid grid-cols-2 gap-2">
                             {/* Left Column: Product Details */}
                             <div>
-                                <h2 className="text-xl font-semibold text-white mb-2">{product.name || 'Product'}</h2>
+                                <h2 className="text-xl font-semibold text-white mb-2">{product.productName || 'Product'}</h2>
                                 <p className="text-2xl font-bold text-white">${product.unitPrice}</p>
                                 <div className="flex items-center gap-1 mt-2">
                                     <Star className="w-4 h-4 text-accent" />
@@ -90,11 +91,11 @@ const Home = (props) => {
                                 <div className="flex items-center gap-1">
                                     <Circle
                                         className={`w-3 h-3 ${
-                                            product.isAvailable !== false ? 'text-green-500' : 'text-red-500'
+                                            product.available !== false ? 'text-green-500' : 'text-red-500'
                                         }`}
                                     />
                                     <span className="text-white text-xs">
-                    {product.isAvailable !== false ? 'In Stock' : 'Out of Stock'}
+                    {product.available !== false ? 'In Stock' : 'Out of Stock'}
                   </span>
                                 </div>
                                 {/* Discount Status */}

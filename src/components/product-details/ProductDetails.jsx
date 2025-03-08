@@ -1,20 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import axiosFetch from "../utils/auth/Auth.js";
 import ReviewPopup from "../review/ReviewPopup.jsx";
 
 const ProductDetails = () => {
     const [newReview, setNewReview] = useState('');
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { id } = useParams();
     const [productImages, setProductImages] = useState([]);
     const [productDetails, setProductDetails] = useState({});
     const [isReviewPopUp, setIsReviewPopUp] = useState(false);
 
-    // Sample product data
+    // Sample product data with added stock info
     const product = {
         name: 'Ultra Comfort Running Shoes',
         price: 129.99,
+        inStock: true,  // Added inStock status
+        quantityOnHand: 15,  // Added quantity on hand
         description:
             'Premium running shoes designed for maximum comfort and performance. Features advanced cushioning technology and breathable mesh upper.',
         images: ['/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300'],
@@ -40,9 +42,9 @@ const ProductDetails = () => {
 
     const showData = async () => {
         const response = await axiosFetch.get(`/api/v1/products/visitor/${id}`);
-        setProductDetails(response?.data?.object)
-        console.log(response?.data?.object)
-    }
+        setProductDetails(response?.data?.object);
+        console.log(response?.data?.object);
+    };
 
     useEffect(() => {
         showData();
@@ -50,18 +52,18 @@ const ProductDetails = () => {
 
     useEffect(() => {
         setProductImages(productDetails?.productImages || []);
-    }, [productImages]);
+    }, [productDetails]);  // Changed dependency to reflect productDetails updates
 
     const handleAddReview = () => {
-        navigate(`/product/review/${id}`)
-        console.log(id)
+        navigate(`/product/review/${id}`);
+        console.log(id);
     };
 
     const handleBuyNow = () => {
         console.log('Processing purchase...');
     };
 
-    const StarRating = ({rating}) => {
+    const StarRating = ({ rating }) => {
         return (
             <div className="text-accent">
                 {'★'.repeat(rating)}
@@ -71,10 +73,10 @@ const ProductDetails = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
+        <div className="max-w-6xl mx-auto p-6 bg-light dark:bg-gray-900">
             <button
                 onClick={() => navigate("/")}
-                className="mb-6 flex items-center gap-2 text-white hover:text-light"
+                className="mb-6 flex items-center gap-2 text-primary dark:text-white hover:text-accent dark:hover:text-gray-300"
             >
                 ← Back to Products
             </button>
@@ -83,8 +85,8 @@ const ProductDetails = () => {
                 {
                     productImages.length !== 0 && (
                         <div className="space-y-4">
-                            <div className="aspect-square overflow-hidden rounded-lg bg-primary">
-                                <img src={productImages[0]?.resourceUrl} alt={product.name}
+                            <div className="aspect-square overflow-hidden rounded-lg bg-light/50 dark:bg-gray-800">
+                                <img src={productImages[0]?.resourceUrl} alt={productDetails.productName}
                                      className="w-full h-full object-cover"/>
                             </div>
                             {productImages.length > 1 && (
@@ -93,8 +95,8 @@ const ProductDetails = () => {
                                         <img
                                             key={idx}
                                             src={img.resourceUrl}
-                                            alt={`${product.name} view ${idx + 2}`}
-                                            className="aspect-square rounded-lg object-cover bg-primary"
+                                            alt={`${productDetails.productName} view ${idx + 2}`}
+                                            className="aspect-square rounded-lg object-cover bg-light/50 dark:bg-gray-800"
                                         />
                                     ))}
                                 </div>
@@ -105,47 +107,30 @@ const ProductDetails = () => {
 
                 <div className="space-y-6">
                     <div>
-                        <h1 className="text-3xl font-bold text-white">{product.name}</h1>
-                        <p className="text-2xl font-semibold mt-2 text-white">${productDetails.unitPrice}</p>
-                    </div>
-
-                    <p className="text-white">{product.description}</p>
-
-                    <div className="space-y-4">
-                        <div>
-                            <h3 className="font-semibold text-white mb-2">Size</h3>
-                            <div className="flex gap-2 flex-wrap">
-                                {product.sizes.map((size) => (
-                                    <button
-                                        key={size}
-                                        className="w-12 h-12 border border-gray-700 text-white rounded-md
-                                        hover:border-light"
-                                    >
-                                        {size}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="font-semibold text-white mb-2">Color</h3>
-                            <div className="flex gap-2">
-                                {product.colors.map((color) => (
-                                    <button
-                                        key={color}
-                                        className="px-4 py-2 border border-gray-700 text-white rounded-md
-                                        hover:border-light"
-                                    >
-                                        {color}
-                                    </button>
-                                ))}
-                            </div>
+                        <h1 className="text-3xl font-bold text-primary dark:text-white">{productDetails.productName}</h1>
+                        <p className="text-2xl font-semibold mt-2 text-primary dark:text-white">${productDetails.unitPrice}</p>
+                        {/* Stock Status and Quantity */}
+                        <div className="mt-2 flex items-center gap-4">
+                            <span
+                                className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                                    productDetails.available
+                                        ? 'bg-accent text-white'
+                                        : 'bg-red-500 text-white'
+                                }`}
+                            >
+                                {productDetails.available ? 'In Stock' : 'Out of Stock'}
+                            </span>
+                            <span className="text-secondary dark:text-gray-300">
+                                Quantity Available: {productDetails.qty || 0}
+                            </span>
                         </div>
                     </div>
+
+                    <p className="text-secondary dark:text-gray-300">{productDetails.description}</p>
 
                     <button
                         onClick={handleBuyNow}
-                        className="w-full bg-accent text-white py-3 rounded-md hover:bg-opacity-90 transition-colors"
+                        className="w-full bg-accent text-white py-3 rounded-md hover:bg-accent/90 transition-colors"
                     >
                         Buy Now
                     </button>
@@ -154,38 +139,35 @@ const ProductDetails = () => {
 
             <div className="mt-12">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-white">Customer Reviews</h2>
+                    <h2 className="text-2xl font-bold text-primary dark:text-white">Customer Reviews</h2>
                     <button
                         onClick={() => setIsReviewPopUp(true)}
-                        className="px-4 py-2 bg-primary text-white border border-gray-700 rounded-md hover:bg-gray-700"
+                        className="px-4 py-2 bg-primary text-white border border-secondary rounded-md hover:bg-primary/90"
                     >
                         Add Review
                     </button>
                 </div>
-                {
-                    isReviewPopUp && <ReviewPopup onClose={()=>setIsReviewPopUp(false)}/>
-                }
+                {isReviewPopUp && <ReviewPopup onClose={() => setIsReviewPopUp(false)} />}
 
                 <div className="space-y-4">
                     {product.reviews.map((review) => (
-                        <div key={review.id} className="p-4 border border-gray-700 rounded-lg bg-primary">
+                        <div key={review.id} className="p-4 border border-secondary rounded-lg bg-light/50 dark:bg-gray-900/50">
                             <div className="flex items-start gap-4">
                                 <div
-                                    className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center
-                                    text-white">
+                                    className="w-10 h-10 rounded-full bg-light dark:bg-gray-800 flex items-center justify-center text-primary dark:text-white">
                                     {review.user[0]}
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex justify-between">
                                         <div>
-                                            <p className="font-semibold text-white">{review.user}</p>
-                                            <StarRating rating={review.rating}/>
+                                            <p className="font-semibold text-primary dark:text-white">{review.user}</p>
+                                            <StarRating rating={review.rating} />
                                         </div>
-                                        <span className="text-white text-sm">
-                      {new Date(review.date).toLocaleDateString()}
-                    </span>
+                                        <span className="text-secondary dark:text-gray-300 text-sm">
+                                            {new Date(review.date).toLocaleDateString()}
+                                        </span>
                                     </div>
-                                    <p className="mt-2 text-white">{review.comment}</p>
+                                    <p className="mt-2 text-secondary dark:text-gray-300">{review.comment}</p>
                                 </div>
                             </div>
                         </div>
