@@ -91,7 +91,7 @@ const NavBar = ({cartCount}) => {
                                 </span>)}
                     </button>
 
-                    {cookie ? (<div>
+                    {cookie ? (<div className="flex items-center content-center gap-4">
                             <button className="text-accent hover:text-light" onClick={goProfile}>
                                 <User className="w-6 h-6"/>
                             </button>

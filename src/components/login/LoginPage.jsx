@@ -29,6 +29,7 @@ const LoginPage = () => {
             setIsLoading(true);
             try {
                 const response = await axiosFetch.post(`/login`, formData);
+                console.log(response)
                 const token = response?.headers?.getAuthorization();
                 const decodedToken = jwtDecode(token);
                 localStorage.setItem('jwtToken', token);

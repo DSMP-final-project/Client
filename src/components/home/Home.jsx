@@ -117,7 +117,7 @@ const Home = (props) => {
                                 className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-opacity-90
                                 transition-colors flex items-center justify-center gap-2"
                             >
-                                <ShoppingCart className="w-4 h-4 text-accent" />
+                                <ShoppingCart className="w-4 h-4" />
                                 Add to Cart
                             </button>
                         </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axiosFetch from "../utils/auth/Auth.js";
 import ReviewPopup from "../review/ReviewPopup.jsx";
+import { ShoppingCart } from 'lucide-react';
 
 const ProductDetails = () => {
     const [newReview, setNewReview] = useState('');
@@ -133,6 +134,13 @@ const ProductDetails = () => {
                         className="w-full bg-accent text-white py-3 rounded-md hover:bg-accent/90 transition-colors"
                     >
                         Buy Now
+                    </button>
+                    <button
+                        onClick={handleBuyNow}
+                        className="w-full bg-accent text-white py-3 rounded-md hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+                    >
+                        <ShoppingCart className="w-5 h-5"/>
+                        Add To Cart
                     </button>
                 </div>
             </div>
