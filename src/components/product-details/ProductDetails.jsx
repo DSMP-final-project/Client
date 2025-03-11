@@ -5,7 +5,7 @@ import ReviewPopup from "../review/ReviewPopup.jsx";
 import { ShoppingCart } from 'lucide-react';
 
 const ProductDetails = () => {
-    const [newReview, setNewReview] = useState('');
+    const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
     const [productImages, setProductImages] = useState([]);
@@ -44,7 +44,8 @@ const ProductDetails = () => {
     const showData = async () => {
         const response = await axiosFetch.get(`/api/v1/products/visitor/${id}`);
         setProductDetails(response?.data?.object);
-        console.log(response?.data?.object);
+        console.log(response?.data?.object?.reviewList);
+        setReviews(response?.data?.object?.reviewList)
     };
 
     useEffect(() => {
@@ -53,12 +54,8 @@ const ProductDetails = () => {
 
     useEffect(() => {
         setProductImages(productDetails?.productImages || []);
-    }, [productDetails]);  // Changed dependency to reflect productDetails updates
+    }, [productDetails]);
 
-    const handleAddReview = () => {
-        navigate(`/product/review/${id}`);
-        console.log(id);
-    };
 
     const handleBuyNow = () => {
         console.log('Processing purchase...');
@@ -158,24 +155,27 @@ const ProductDetails = () => {
                 {isReviewPopUp && <ReviewPopup onClose={() => setIsReviewPopUp(false)} />}
 
                 <div className="space-y-4">
-                    {product.reviews.map((review) => (
+                    {reviews.map((review) => (
                         <div key={review.id} className="p-4 border border-secondary rounded-lg bg-light/50 dark:bg-gray-900/50">
                             <div className="flex items-start gap-4">
                                 <div
                                     className="w-10 h-10 rounded-full bg-light dark:bg-gray-800 flex items-center justify-center text-primary dark:text-white">
-                                    {review.user[0]}
+                                    <span className="text-sm font-bold">
+                                    {review.customer.userName ? review.customer.userName.split(" ").map((word) =>
+                                        word[0]).join("") : null}
+                                </span>
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex justify-between">
                                         <div>
-                                            <p className="font-semibold text-primary dark:text-white">{review.user}</p>
+                                            <p className="font-semibold text-primary dark:text-white">{review.customer.userName}</p>
                                             <StarRating rating={review.rating} />
                                         </div>
                                         <span className="text-secondary dark:text-gray-300 text-sm">
-                                            {new Date(review.date).toLocaleDateString()}
+                                            {new Date(review.createdAt).toLocaleDateString()}
                                         </span>
                                     </div>
-                                    <p className="mt-2 text-secondary dark:text-gray-300">{review.comment}</p>
+                                    <p className="mt-2 text-secondary dark:text-gray-300">{review?.comment}</p>
                                 </div>
                             </div>
                         </div>

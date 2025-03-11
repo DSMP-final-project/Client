@@ -6,9 +6,8 @@ import {NavLink, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 import axiosFetch from "../utils/auth/Auth.js";
 
-const NavBar = ({cartCount}) => {
+const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    //const [cartCount, setCartCount] = useState(0);
     const navigate = useNavigate();
     const [isScroll, setIsScroll] = useState(false)
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -84,11 +83,6 @@ const NavBar = ({cartCount}) => {
                 <div className="hidden md:flex items-center space-x-6">
                     <button className="text-accent hover:text-light relative" onClick={goToCart}>
                         <ShoppingCart className="w-6 h-6"/>
-                        {cartCount > 0 &&
-                            (<span className="absolute -top-2 -right-2 bg-warning text-black text-xs rounded-full
-                                w-5 h-5 flex items-center justify-center">
-                                    {cartCount}
-                                </span>)}
                     </button>
 
                     {cookie ? (<div className="flex items-center content-center gap-4">
