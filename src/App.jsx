@@ -10,6 +10,7 @@ import PaymentInterface from "./components/payment/Payment.jsx";
 import ProtectedRoute from "./components/utils/protected-routes/ProtectedRoute.jsx";
 import ProductDetails from "./components/product-details/ProductDetails.jsx";
 import ReviewPopup from "./components/review/ReviewPopup.jsx";
+import {useState} from "react";
 
 
 function App() {
@@ -20,11 +21,7 @@ function App() {
 
                     <Route path="/" element={<LandingPage/>}/>
 
-                    <Route path="/cart" element={
-                        <ProtectedRoute>
-                            <ShoppingCart/>
-                        </ProtectedRoute>
-                    }/>
+                    <Route path="/cart" element={<ShoppingCart/>}/>
                     <Route path="/cart/payment" element={
                         <ProtectedRoute>
                             <PaymentInterface/>

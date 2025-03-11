@@ -1,45 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from "react-router-dom";
 import axiosFetch from "../utils/auth/Auth.js";
 import ReviewPopup from "../review/ReviewPopup.jsx";
-import { ShoppingCart } from 'lucide-react';
+import {ShoppingCart} from 'lucide-react';
+import Cookies from "js-cookie";
+import WarningPopup from "../warning/WarningPopup.jsx";
 
 const ProductDetails = () => {
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
-    const { id } = useParams();
+    const {id} = useParams();
     const [productImages, setProductImages] = useState([]);
     const [productDetails, setProductDetails] = useState({});
     const [isReviewPopUp, setIsReviewPopUp] = useState(false);
-
-    // Sample product data with added stock info
-    const product = {
-        name: 'Ultra Comfort Running Shoes',
-        price: 129.99,
-        inStock: true,  // Added inStock status
-        quantityOnHand: 15,  // Added quantity on hand
-        description:
-            'Premium running shoes designed for maximum comfort and performance. Features advanced cushioning technology and breathable mesh upper.',
-        images: ['/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300'],
-        sizes: ['7', '8', '9', '10', '11', '12'],
-        colors: ['Black', 'White', 'Blue'],
-        reviews: [
-            {
-                id: 1,
-                user: 'Sarah M.',
-                rating: 5,
-                comment: "Best running shoes I've ever owned! Super comfortable.",
-                date: '2025-01-15',
-            },
-            {
-                id: 2,
-                user: 'Mike R.',
-                rating: 4,
-                comment: 'Great shoes, but took a few days to break in.',
-                date: '2025-01-10',
-            },
-        ],
-    };
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const showData = async () => {
         const response = await axiosFetch.get(`/api/v1/products/visitor/${id}`);
@@ -61,7 +35,7 @@ const ProductDetails = () => {
         console.log('Processing purchase...');
     };
 
-    const StarRating = ({ rating }) => {
+    const StarRating = ({rating}) => {
         return (
             <div className="text-accent">
                 {'★'.repeat(rating)}
@@ -70,8 +44,34 @@ const ProductDetails = () => {
         );
     };
 
+    const handleAddToCart = async (id) => {
+
+        try {
+            const response = await axiosFetch.post(`/api/v1/cart/save`, null, {
+                params: {
+                    pId: id, uId: Cookies.get('userId')
+                }
+            })
+            location.reload()
+        } catch (e) {
+            if (e.status === 422) {
+                console.log("Product not available.")
+            }else if(e.status === 403){
+                setIsPopupOpen(true);
+            } else {
+                console.error("An error occurred:", e);
+            }
+        }
+
+    };
+
     return (
         <div className="max-w-6xl mx-auto p-6 bg-light dark:bg-gray-900">
+            <div>
+                {isPopupOpen && (
+                    <WarningPopup/>
+                )}
+            </div>
             <button
                 onClick={() => navigate("/")}
                 className="mb-6 flex items-center gap-2 text-primary dark:text-white hover:text-accent dark:hover:text-gray-300"
@@ -133,8 +133,9 @@ const ProductDetails = () => {
                         Buy Now
                     </button>
                     <button
-                        onClick={handleBuyNow}
-                        className="w-full bg-accent text-white py-3 rounded-md hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+                        onClick={() => handleAddToCart(productDetails.propertyId)}
+                        className={`w-full bg-accent text-white py-3 rounded-md hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 ${productDetails.available ? '' : 'opacity-50 cursor-not-allowed'}`}
+                        disabled={!productDetails.available}
                     >
                         <ShoppingCart className="w-5 h-5"/>
                         Add To Cart
@@ -152,11 +153,12 @@ const ProductDetails = () => {
                         Add Review
                     </button>
                 </div>
-                {isReviewPopUp && <ReviewPopup onClose={() => setIsReviewPopUp(false)} />}
+                {isReviewPopUp && <ReviewPopup onClose={() => setIsReviewPopUp(false)}/>}
 
                 <div className="space-y-4">
                     {reviews.map((review) => (
-                        <div key={review.id} className="p-4 border border-secondary rounded-lg bg-light/50 dark:bg-gray-900/50">
+                        <div key={review.id}
+                             className="p-4 border border-secondary rounded-lg bg-light/50 dark:bg-gray-900/50">
                             <div className="flex items-start gap-4">
                                 <div
                                     className="w-10 h-10 rounded-full bg-light dark:bg-gray-800 flex items-center justify-center text-primary dark:text-white">
@@ -169,7 +171,7 @@ const ProductDetails = () => {
                                     <div className="flex justify-between">
                                         <div>
                                             <p className="font-semibold text-primary dark:text-white">{review.customer.userName}</p>
-                                            <StarRating rating={review.rating} />
+                                            <StarRating rating={review.rating}/>
                                         </div>
                                         <span className="text-secondary dark:text-gray-300 text-sm">
                                             {new Date(review.createdAt).toLocaleDateString()}
